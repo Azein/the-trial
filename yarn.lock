@@ -9262,6 +9262,10 @@ three@^0.119.1:
   version "0.119.1"
   resolved "https://registry.yarnpkg.com/three/-/three-0.119.1.tgz#9d979a082c4cd9622af8e3498a8dfa026a619332"
 
+threejs-meshline@^2.0.11:
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/threejs-meshline/-/threejs-meshline-2.0.11.tgz#f56b0462128aadd69e59ce583e1fec7bc8f21f53"
+
 throat@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/throat/-/throat-4.1.0.tgz#89037cbc92c56ab18926e6ba4cbb200e15672a6a"
