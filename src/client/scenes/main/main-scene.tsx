@@ -26,7 +26,7 @@ const Box = (props: any) => {
 }
 
 export const MainScene = () => (
-  <Canvas>
+  <Canvas style={{ width: "100%", height: "100%" }}>
     <ambientLight />
     <pointLight position={[10, 10, 10]} />
     <Box position={[-1.2, 0, 0]} />

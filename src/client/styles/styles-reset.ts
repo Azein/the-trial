@@ -99,4 +99,9 @@ export const GlobalStyles = createGlobalStyle`
     height: 100vh;
     width: 100vw;
   }
+  #root {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+  }
 `
