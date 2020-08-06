@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react"
 import * as meshline from "threejs-meshline"
 import { Canvas, useFrame, extend } from "react-three-fiber"
 import { Vector3, CatmullRomCurve3 } from "three"
+import { generateMap } from "client/models/world/generate-map"
 
 extend(meshline)
 
@@ -26,7 +27,7 @@ const Line3 = () => {
   )
 }
 
-const Box = (props: any) => {
+const Box = ({ color, ...props }: any) => {
   const mesh = useRef() as any
 
   const [hovered, setHover] = useState(false)
@@ -44,17 +45,22 @@ const Box = (props: any) => {
       onPointerOut={() => setHover(false)}
     >
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" color={hovered ? "hotpink" : "orange"} />
+      <meshStandardMaterial attach="material" color={hovered ? "hotpink" : color} />
     </mesh>
   )
 }
 
+const { nodesByID } = generateMap({ nodeSize: 1, axisCapacity: 12 })
+
 export const MainScene = () => (
-  <Canvas style={{ width: "100%", height: "100%" }} camera={{ position: [10, 10, 10] }}>
+  <Canvas style={{ width: "100%", height: "100%" }} camera={{ position: [30, 20, 20] }}>
     <ambientLight />
     <pointLight position={[10, 10, 10]} />
-    <Box position={[-1.2, 0, 0]} />
-    <Box position={[1.2, 0, 0]} />
-    <Line3 />
+    {/* <Box position={[-1.2, 0, 0]} />
+    <Box position={[1.2, 0, 0]} /> */}
+    {Object.values(nodesByID).map(({ x, y, z, color }) => (
+      <Box position={[x, y, z]} color={color} />
+    ))}
+    {/* <Line3 /> */}
   </Canvas>
 )
