@@ -2,7 +2,8 @@ import React, { useRef, useState } from "react"
 import * as meshline from "threejs-meshline"
 import { Canvas, useFrame, extend } from "react-three-fiber"
 import { Vector3, CatmullRomCurve3 } from "three"
-import { generateMap } from "client/models/world/generate-map"
+import { createCube } from "client/models/world/figures/cube"
+import { BASE_SCALE, SCALED, CAMERA_POSITION, LIGHT_POSITION } from "./constants"
 
 extend(meshline)
 
@@ -39,27 +40,25 @@ const Box = ({ color, ...props }: any) => {
     <mesh
       {...props}
       ref={mesh}
-      scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
+      scale={active ? SCALED : BASE_SCALE}
       onClick={() => setActive(!active)}
       onPointerOver={() => setHover(true)}
       onPointerOut={() => setHover(false)}
     >
-      <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+      <boxBufferGeometry attach="geometry" args={BASE_SCALE} />
       <meshStandardMaterial attach="material" color={hovered ? "hotpink" : color} />
     </mesh>
   )
 }
 
-const { nodesByID } = generateMap({ nodeSize: 1, axisCapacity: 12 })
+const { nodes } = createCube({ nodeSize: 1, axisCapacity: 12 })
 
 export const MainScene = () => (
-  <Canvas style={{ width: "100%", height: "100%" }} camera={{ position: [30, 20, 20] }}>
+  <Canvas style={{ width: "100%", height: "100%" }} camera={{ position: CAMERA_POSITION }}>
     <ambientLight />
-    <pointLight position={[10, 10, 10]} />
-    {/* <Box position={[-1.2, 0, 0]} />
-    <Box position={[1.2, 0, 0]} /> */}
-    {Object.values(nodesByID).map(({ x, y, z, color }) => (
-      <Box position={[x, y, z]} color={color} />
+    <pointLight position={LIGHT_POSITION} />
+    {nodes.map((node) => (
+      <Box position={node.position} color={node.color} />
     ))}
     {/* <Line3 /> */}
   </Canvas>
