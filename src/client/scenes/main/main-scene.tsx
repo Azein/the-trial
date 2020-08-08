@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react"
 import * as meshline from "threejs-meshline"
 import { Canvas, useFrame, extend } from "react-three-fiber"
 import { Vector3, CatmullRomCurve3 } from "three"
-import { createWorld } from "client/models/world/generate-map"
+import { createCube } from "client/models/world/figures/cube"
 import { BASE_SCALE, SCALED, CAMERA_POSITION, LIGHT_POSITION } from "./constants"
 
 extend(meshline)
@@ -51,7 +51,7 @@ const Box = ({ color, ...props }: any) => {
   )
 }
 
-const { nodes } = createWorld({ nodeSize: 1, axisCapacity: 12 })
+const { nodes } = createCube({ nodeSize: 1, axisCapacity: 12 })
 
 export const MainScene = () => (
   <Canvas style={{ width: "100%", height: "100%" }} camera={{ position: CAMERA_POSITION }}>
