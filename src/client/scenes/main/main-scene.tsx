@@ -3,6 +3,7 @@ import * as meshline from "threejs-meshline"
 import { Canvas, useFrame, extend } from "react-three-fiber"
 import { Vector3, CatmullRomCurve3 } from "three"
 import { createCube } from "client/models/world/figures/cube"
+import { createComplexFigure } from "client/models/world/figures/ complex-figure"
 import { BASE_SCALE, SCALED, CAMERA_POSITION, LIGHT_POSITION } from "./constants"
 
 extend(meshline)
@@ -51,13 +52,18 @@ const Box = ({ color, ...props }: any) => {
   )
 }
 
-const { nodes } = createCube({ nodeSize: 1, axisCapacity: 12 })
+// const { nodes } = createCube({ nodeSize: 1, axisCapacity: 12 })
+const { nodesByID } = createComplexFigure({
+  nodeSize: 1,
+  axisConfig: { xCap: 4, yCap: 30, zCap: 3 },
+  yLevelColors: ["#000"],
+})
 
 export const MainScene = () => (
   <Canvas style={{ width: "100%", height: "100%" }} camera={{ position: CAMERA_POSITION }}>
     <ambientLight />
     <pointLight position={LIGHT_POSITION} />
-    {nodes.map((node) => (
+    {Object.values(nodesByID).map((node) => (
       <Box position={node.position} color={node.color} />
     ))}
     {/* <Line3 /> */}
