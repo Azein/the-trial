@@ -5,6 +5,5 @@ interface WorldNode {
   nodeSize: number
   id: string
   color: string
-  opacity?: number
-  transparent?: boolean
+  isVisible?: boolean
 }

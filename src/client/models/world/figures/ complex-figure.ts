@@ -47,12 +47,12 @@ export const generateArenaNode = ({
     position: [x, y, z] as [number, number, number],
     nodeSize,
     id,
-    color: yLevelColors[y] || `#${createRandomColor()}`,
+    color: yLevelColors[y] || "green",
+    isVisible: true,
   } as WorldNode
 
   if (y > 0 && z > 0 && z < zCap - 1 && x > 0 && x < xCap - 1) {
-    node.transparent = true
-    node.opacity = 0
+    node.isVisible = false
   }
 
   return node

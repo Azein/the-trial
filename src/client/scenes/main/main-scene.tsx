@@ -1,5 +1,6 @@
 import React, { useRef, useState, useMemo } from "react"
 import * as meshline from "threejs-meshline"
+import { OrbitControls } from "drei"
 import { Canvas, useFrame, extend } from "react-three-fiber"
 import { Vector3, CatmullRomCurve3 } from "three"
 import { createCube } from "client/models/world/figures/cube"
@@ -29,36 +30,15 @@ const Line3 = () => {
   )
 }
 
-const Box = ({ color, ...props }: any) => {
+const Box = ({ color, isVisible, ...props }: any) => {
   const mesh = useRef() as any
-
-  const [hovered, setHover] = useState(false)
-  const [active, setActive] = useState(false)
 
   // useFrame(() => (mesh.current.rotation.x = mesh.current.rotation.y += 0.01))
 
-  const { transparent, opacity, ...rest } = props
-
   return (
-    <mesh
-      {...rest}
-      ref={mesh}
-      scale={active ? SCALED : BASE_SCALE}
-      onClick={() => setActive(!active)}
-      onPointerOver={() => setHover(true)}
-      onPointerOut={() => setHover(false)}
-    >
+    <mesh {...props} ref={mesh} scale={BASE_SCALE} visible={isVisible}>
       <boxBufferGeometry attach="geometry" args={BASE_SCALE} />
-      {transparent ? ( // has to be either with or without transparency, three requirement
-        <meshStandardMaterial
-          attach="material"
-          color={hovered ? "hotpink" : color}
-          transparent={transparent}
-          opacity={opacity}
-        />
-      ) : (
-        <meshStandardMaterial attach="material" color={hovered ? "hotpink" : color} />
-      )}
+      <meshStandardMaterial attach="material" color={color} />
     </mesh>
   )
 }
@@ -66,24 +46,22 @@ const Box = ({ color, ...props }: any) => {
 // const { nodes } = createCube({ nodeSize: 1, axisCapacity: 12 })
 const { nodesByID } = createComplexFigure({
   nodeSize: 1,
-  axisConfig: { xCap: 10, yCap: 2, zCap: 10 },
+  axisConfig: { xCap: 50, yCap: 2, zCap: 50 },
   yLevelColors: ["#000"],
   generateNode: generateArenaNode,
 })
 
-export const MainScene = () => (
-  <Canvas style={{ width: "100%", height: "100%" }} camera={{ position: CAMERA_POSITION }}>
-    <ambientLight />
-    <pointLight position={LIGHT_POSITION} />
-    {Object.values(nodesByID).map((node) => (
-      <Box
-        key={node.id}
-        position={node.position}
-        color={node.color}
-        opacity={node.opacity}
-        transparent={node.transparent}
-      />
-    ))}
-    {/* <Line3 /> */}
-  </Canvas>
-)
+export const MainScene = () => {
+  return (
+    <Canvas style={{ width: "100%", height: "100%" }} camera={{ position: CAMERA_POSITION }}>
+      <ambientLight />
+      <pointLight position={LIGHT_POSITION} />
+      <OrbitControls />
+      {Object.values(nodesByID).map((node) => (
+        <Box key={node.id} position={node.position} color={node.color} isVisible={node.isVisible} />
+      ))}
+
+      {/* <Line3 /> */}
+    </Canvas>
+  )
+}
